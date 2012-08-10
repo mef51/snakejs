@@ -18,7 +18,7 @@ $(document).ready(function() {
     var isAlive = false;
 
     var score = 0;
-    var food = {x: Math.random() * 2;
+    var food = {x: Math.floor(Math.random() * w), y: Math.floor(Math.random() * h)};
 
     var gameLoop = setInterval(function() {
         if(isAlive){
@@ -39,13 +39,18 @@ $(document).ready(function() {
         var KEY_UP = KEY_LEFT + 1; // 38
         var KEY_RIGHT = KEY_UP + 1; // 39
         var KEY_DOWN = KEY_RIGHT + 1; // 40
+        // vim mode LOL
+        var KEY_H = 72;
+        var KEY_J = 74;
+        var KEY_K = 75;
+        var KEY_L = 76;
 
         // don't allow snake to go in reverse on itself
         var key = e.which;
-        if(key == KEY_RIGHT && direction != "left") direction = "right";
-        if(key == KEY_LEFT && direction != "right") direction = "left";
-        if(key == KEY_UP && direction != "down") direction = "up";
-        if(key == KEY_DOWN && direction != "up") direction = "down";
+        if((key == KEY_RIGHT || key == KEY_L) && direction != "left") direction = "right";
+        if((key == KEY_LEFT || key == KEY_H) && direction != "right") direction = "left";
+        if((key == KEY_UP || key == KEY_K) && direction != "down") direction = "up";
+        if((key == KEY_DOWN || key == KEY_J) && direction != "up") direction = "down";
     });
 
 
