@@ -11,19 +11,21 @@ $(document).ready(function() {
 
     // the snake
     var length = 5;
-    var cellWidth = w / 40;
+    var numCells = 40; // should be > length
+    var cellWidth = w / numCells;
     var cellHeight = cellWidth;
     var snake; // an array of cells. A "cell" is a point in space
     var direction; // by default
     var isAlive = false;
 
     var score = 0;
-    var food = {x: Math.floor(Math.random() * w), y: Math.floor(Math.random() * h)};
+    var food = getRandomCell(numCells);
 
     var gameLoop = setInterval(function() {
         if(isAlive){
             drawSnake(snake);
             moveSnake(snake, direction);
+            placeFood(food);
         }
         else { // sets up the game
             snake = createSnake(length);
@@ -53,6 +55,43 @@ $(document).ready(function() {
         if((key == KEY_DOWN || key == KEY_J) && direction != "up") direction = "down";
     });
 
+    function placeFood(foodCell) {
+        // using 'foodCell' instead of just 'food' cuz I don't know how
+        // to refer to the global "food" from inside the function
+        if(hasEaten(snake, foodCell)){
+            eat();
+            drawCell(food);
+        }
+        else {
+            drawCell(foodCell);
+        }
+    }
+
+    function eat() {
+        food = getRandomCell(numCells);
+        grow(snake);
+    }
+
+    function grow(snake) {
+        length++;
+    }
+
+    function hasEaten(snake, food) {
+        // if the snakes head is on the food, it is eaten.
+        var head = snake[snake.length - 1];
+        if(head.x == food.x && head.y == food.y){
+            log("has eaten");
+            return true;
+        }
+        else return false;
+    }
+
+    function getRandomCell(numCells) {
+        return {
+            x: Math.floor(Math.random() * numCells),
+            y: Math.floor(Math.random() * numCells)
+        };
+    }
 
     function moveSnake(snake, direction) {
         var head = snake[snake.length - 1];
@@ -90,11 +129,15 @@ $(document).ready(function() {
         // renders the snake
         for(var i = 0; i < snake.length; i++) {
             var c = snake[i];
-            ctx.fillStyle = "blue";
-            ctx.fillRect(c.x * cellWidth, c.y * cellHeight, cellWidth, cellHeight);
-            ctx.strokeStyle = "white";
-            ctx.strokeRect(c.x * cellWidth, c.y * cellHeight, cellWidth, cellHeight);
+            drawCell(c);
         }
+    }
+
+    function drawCell(c) {
+        ctx.fillStyle = "blue";
+        ctx.fillRect(c.x * cellWidth, c.y * cellHeight, cellWidth, cellHeight);
+        ctx.strokeStyle = "white";
+        ctx.strokeRect(c.x * cellWidth, c.y * cellHeight, cellWidth, cellHeight);
     }
 
     function drawBackground() {
