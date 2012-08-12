@@ -74,6 +74,17 @@ $(document).ready(function() {
 
     function grow(snake) {
         length++;
+        var newCell = {
+            x: snake[0].x,
+            y: snake[0].y
+        };
+
+        if(direction == "right") newCell.x--;
+        if(direction == "left") newCell.x++;
+        if(direction == "up") newCell.y++;
+        if(direction == "right") newCell.y--;
+
+        snake.unshift(newCell);
     }
 
     function hasEaten(snake, food) {
