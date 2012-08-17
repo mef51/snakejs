@@ -1,11 +1,12 @@
 
 $(document).ready(function() {
 
-    // Canvas stuff
-    var canvas = $("#snakecanvas")
-    var ctx = canvas[0].getContext("2d");
-    var w = canvas.width();
-    var h = canvas.height();
+    // setup Canvas stuff
+    var Canvas = getCanvas("snakecanvas");
+    var canvas = Canvas.canvas;
+    var ctx = Canvas.context;
+    var w = Canvas.width;
+    var h = Canvas.height;
 
     var fps = 20; // 1000 / fps is the amount in ms each frame should last to have a frame rate of fps
 
