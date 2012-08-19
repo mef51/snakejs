@@ -8,10 +8,13 @@ $(document).ready(function() {
     var w = Canvas.width;
     var h = Canvas.height;
 
-    var fps = 20; // 1000 / fps is the amount in ms each frame should last to have a frame rate of fps
+    // some constants
+    var FPS = 20; // 1000 / FPS is the amount in ms each frame should last to have a frame rate of FPS
+    var START_LENGTH = 5;
+    var SCORE_INCREMENT = 5;
 
     // the snake
-    var length = 5;
+    var length = START_LENGTH;
     var numCells = 40; // should be > length
     var cellWidth = w / numCells;
     var cellHeight = cellWidth;
@@ -22,18 +25,24 @@ $(document).ready(function() {
     var score = 0;
     var food = getRandomCell(numCells);
 
+    /**
+    * All the important stuff happens here.
+    * Hence the multi-line comment.
+    */
     var gameLoop = setInterval(function() {
         if(isAlive){
             drawSnake(snake);
             moveSnake(snake, direction);
+            drawScore(score);
             placeFood(food);
         }
         else { // sets up the game
+            reset()
             snake = createSnake(length);
             direction = "right"; // "right" by default
             isAlive = true;
         }
-    }, 1000 / fps);
+    }, 1000 / FPS);
 
     // arrow key controls
     var keyHandler = $(document).keydown(function(e){
@@ -56,6 +65,17 @@ $(document).ready(function() {
         if((key == KEY_DOWN || key == KEY_J) && direction != "up") direction = "down";
     });
 
+    function reset() {
+        length = START_LENGTH;
+        food = getRandomCell(numCells);
+        score = 0;
+    }
+
+    function drawScore(score) {
+        var text = "Score: " + score;
+        ctx.fillText(text, 5, h-5);
+    }
+
     function placeFood(foodCell) {
         // using 'foodCell' instead of just 'food' cuz I don't know how
         // to refer to the global "food" from inside the function
@@ -69,6 +89,7 @@ $(document).ready(function() {
     }
 
     function eat() {
+        score += SCORE_INCREMENT;
         food = getRandomCell(numCells);
         grow(snake);
     }
