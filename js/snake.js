@@ -73,7 +73,7 @@ $(document).ready(function() {
 
     function drawScore(score) {
         var text = "Score: " + score;
-        ctx.fillText(text, 5, h-5);
+        fillString(text, 5, h - 5, Canvas);
     }
 
     function placeFood(foodCell) {
