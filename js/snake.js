@@ -3,8 +3,6 @@ $(document).ready(function() {
 
     // setup Canvas stuff
     var Canvas = getCanvas("snakecanvas");
-    var canvas = Canvas.canvas;
-    var ctx = Canvas.context;
     var w = Canvas.width;
     var h = Canvas.height;
 
@@ -73,7 +71,7 @@ $(document).ready(function() {
 
     function drawScore(score) {
         var text = "Score: " + score;
-        fillString(text, 5, h - 5, Canvas);
+        Canvas.fillString(text, 5, h - 5);
     }
 
     function placeFood(foodCell) {
@@ -81,10 +79,10 @@ $(document).ready(function() {
         // to refer to the global "food" from inside the function
         if(hasEaten(snake, foodCell)){
             eat();
-            drawCell(food);
+            Canvas.drawCell("blue", "white", food, cellWidth, cellHeight);
         }
         else {
-            drawCell(foodCell);
+            Canvas.drawCell("blue", "white", foodCell, cellWidth, cellHeight);
         }
     }
 
@@ -158,27 +156,12 @@ $(document).ready(function() {
 
     function drawSnake(snake) {
         // draw background
-        drawBackground();
+        Canvas.drawBackground("white", "black");
         // renders the snake
         for(var i = 0; i < snake.length; i++) {
             var c = snake[i];
-            drawCell(c);
+            Canvas.drawCell("blue", "white", c, cellWidth, cellHeight);
         }
-    }
-
-    function drawCell(c) {
-        ctx.fillStyle = "blue";
-        ctx.fillRect(c.x * cellWidth, c.y * cellHeight, cellWidth, cellHeight);
-        ctx.strokeStyle = "white";
-        ctx.strokeRect(c.x * cellWidth, c.y * cellHeight, cellWidth, cellHeight);
-    }
-
-    function drawBackground() {
-        // the background and border of the canvas.
-        ctx.fillStyle = "white";
-        ctx.fillRect(0, 0, w, h);
-        ctx.strokeStyle = "black";
-        ctx.strokeRect(0, 0, w, h);
     }
 
     function createSnake(length) {
